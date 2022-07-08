@@ -1,13 +1,15 @@
 package application;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class Usuario{
+
+public abstract class Usuario{
 	private String nome;
 	private String matricula;
 	private String login;
 	private String senha;
+    private ArrayList<Disciplina> disciplinas = new ArrayList<Disciplina>();
+
 	
 	public Usuario(String nome,String login, String senha){
 		this.setNome(nome);
@@ -47,22 +49,33 @@ public class Usuario{
 		this.senha = senha;
 	}
 	
-	public void gerarMatricula(String usuario, List<String> matriculas) {
-		String codigo;
-		int tamanho = matriculas.size();
-		String matricula;
-		
-		if (usuario == "Aluno") {
-			codigo = "AL";
-		}
-		else {
-			codigo = "PR";
-		}
-		matricula = codigo + Integer.toString(tamanho);
-		
-		setMatricula(matricula);
+	public ArrayList<Disciplina> getDisciplinas() {
+		return disciplinas;
+	}
+
+	public void gerarMatriculaTemplateMethod(int tamanho, int ano) {
+		this.prefixo();
+		this.numSufixo(tamanho);
+		this.anoSufixo(ano);
+		this.matriculaToString();
 		
 	}
 	
+	public abstract void prefixo();
+	
+	public void numSufixo(int tamanho) {
+		this.setMatricula(this.getMatricula() + Integer.toString(tamanho));
+	}
+	
+	public void anoSufixo(int ano) {
+		String anoString = Integer.toString(ano);
+		this.setMatricula(this.getMatricula() + anoString.charAt(2) + anoString.charAt(3));
+	}
+	
+	public void matriculaToString() {
+		System.out.println("Matricula gerada com sucesso!\n Sua matricula: "+ this.getMatricula()+"\n===============================================================");
+	}
+	
+	public abstract String listarDisciplinas();
 
 }
